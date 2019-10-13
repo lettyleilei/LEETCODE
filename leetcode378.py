@@ -1,47 +1,24 @@
+import heapq
 class Solution:
+
     def kthSmallest(self, matrix, k):
 
         n = len(matrix)
-        result = []
-
-        while matrix[-1][-1] is not None:
-            result.append(matrix[-1][-1])
-            i,j = n-1,n-1
-            self.sort(i,j,matrix)
-            print(matrix)
-        return result[-k]
-
-    def sort(self,i,j,matrix):
-        while   i>0 and j>0 :
-            if i-1>0 and j-1>0 and matrix[i-1][j] is not None and matrix[i][j-1] is not None:
-                if matrix[i-1][j]>matrix[i][j-1]:
-                    matrix[i][j] =matrix[i-1][j]
-                    matrix[i - 1][j]=None
-
-                    i=i-1
-                else:
-                    matrix[i][j] = matrix[i ][j-1]
-                    matrix[i][j - 1]=None
-
-                    j = j - 1
-            elif i-1>0 and  matrix[i-1][j] is not None:
-                matrix[i][j] = matrix[i - 1][j]
-                matrix[i - 1][j]=None
-
-                i = i - 1
-            elif j-1>0 and matrix[i][j-1] is not None:
-                matrix[i][j] = matrix[i][j - 1]
-                matrix[i][j - 1]=None
-                j = j - 1
-            else:
-                break
-
-            print(i,j)
-            print(matrix)
-
+        max_heap = []
+        for i in range(n):
+            heapq.heappush(max_heap,(matrix[i].pop(0),i))
+        result = 0
+        while result<k:
+            m,index = heapq.heappop(max_heap)
+            result+=1
+            if matrix[index] :
+                print(matrix[index])
+                heapq.heappush(max_heap,(matrix[index].pop(0),index))
+        print(m)
+        return m
 
 test = Solution()
-test.kthSmallest([[1,5,9],[10,11,13],[12,13,15]],8)
+test.kthSmallest([[-1,0,9],[10,11,13],[12,13,15]],8)
 
 
 
